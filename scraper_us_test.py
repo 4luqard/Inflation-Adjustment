@@ -14,13 +14,13 @@ warnings.warn = ignore_warn
 
 
 @pytest.fixture
-def data_ranges():
+def date_ranges():
     return {
-        "data_range_ten_years": {"start": 1986, "end": 1995},
-        "data_range_fifteen_years": {"start": 1986, "end": 2000},
-        "empty_data_range": {"start": "", "end": ""},
-        "invalid_data_range": {"start": "invalid-date", "end": "invalid-date"},
-        "future_data_range": {"start": 2050, "end": 2050},
+        "date_range_ten_years": {"start": 1986, "end": 1995},
+        "date_range_fifteen_years": {"start": 1986, "end": 2000},
+        "empty_date_range": {"start": "", "end": ""},
+        "invalid_date_range": {"start": "invalid-date", "end": "invalid-date"},
+        "future_date_range": {"start": 2050, "end": 2050},
     }
 
 
@@ -344,36 +344,36 @@ def cpi_data_us_fifteen_years():
     )
 
 
-def test_scrape_cpi_data_us_ten_years(data_ranges, cpi_data_us_ten_years):
-    result = scrape_cpi_data_us(data_ranges["data_range_ten_years"])
+def test_scrape_cpi_data_us_ten_years(date_ranges, cpi_data_us_ten_years):
+    result = scrape_cpi_data_us(date_ranges["data_range_ten_years"])
     assert result["CPI"].equals(cpi_data_us_ten_years["CPI"])
 
 
-def test_scrape_cpi_data_us_fifteen_years(data_ranges, cpi_data_us_fifteen_years):
-    result = scrape_cpi_data_us(data_ranges["data_range_fifteen_years"])
+def test_scrape_cpi_data_us_fifteen_years(date_ranges, cpi_data_us_fifteen_years):
+    result = scrape_cpi_data_us(date_ranges["data_range_fifteen_years"])
     assert result["CPI"].equals(cpi_data_us_fifteen_years["CPI"])
 
 
-def test_scrape_cpi_data_us_empty_range(data_ranges):
+def test_scrape_cpi_data_us_empty_range(date_ranges):
     with pytest.raises(
         TypeError, match=r"unsupported operand type\(s\) for -: 'str' and 'str'"
     ):
-        scrape_cpi_data_us(data_ranges["empty_data_range"])
+        scrape_cpi_data_us(date_ranges["empty_data_range"])
 
 
-def test_scrape_cpi_data_us_invalid_range(data_ranges):
+def test_scrape_cpi_data_us_invalid_range(date_ranges):
     with pytest.raises(
         TypeError, match=r"unsupported operand type\(s\) for -: 'str' and 'str'"
     ):
-        scrape_cpi_data_us(data_ranges["invalid_data_range"])
+        scrape_cpi_data_us(date_ranges["invalid_data_range"])
 
 
-def test_scrape_cpi_data_us_future_range(data_ranges):
+def test_scrape_cpi_data_us_future_range(date_ranges):
     with pytest.raises(
         ValueError,
         match="Request failed with status: REQUEST_FAILED_INVALID_PARAMETERS",
     ):
-        scrape_cpi_data_us(data_ranges["future_data_range"])
+        scrape_cpi_data_us(date_ranges["future_data_range"])
 
 
 if __name__ == "__main__":
