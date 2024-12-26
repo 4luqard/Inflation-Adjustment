@@ -345,12 +345,12 @@ def cpi_data_us_fifteen_years():
 
 
 def test_scrape_cpi_data_us_ten_years(data_ranges, cpi_data_us_ten_years):
-    result = scrape_cpi_data_us("CUUR0000SA0", data_ranges["data_range_ten_years"])
+    result = scrape_cpi_data_us(data_ranges["data_range_ten_years"])
     assert result["CPI"].equals(cpi_data_us_ten_years["CPI"])
 
 
 def test_scrape_cpi_data_us_fifteen_years(data_ranges, cpi_data_us_fifteen_years):
-    result = scrape_cpi_data_us("CUUR0000SA0", data_ranges["data_range_fifteen_years"])
+    result = scrape_cpi_data_us(data_ranges["data_range_fifteen_years"])
     assert result["CPI"].equals(cpi_data_us_fifteen_years["CPI"])
 
 
@@ -358,14 +358,14 @@ def test_scrape_cpi_data_us_empty_range(data_ranges):
     with pytest.raises(
         TypeError, match=r"unsupported operand type\(s\) for -: 'str' and 'str'"
     ):
-        scrape_cpi_data_us("CUUR0000SA0", data_ranges["empty_data_range"])
+        scrape_cpi_data_us(data_ranges["empty_data_range"])
 
 
 def test_scrape_cpi_data_us_invalid_range(data_ranges):
     with pytest.raises(
         TypeError, match=r"unsupported operand type\(s\) for -: 'str' and 'str'"
     ):
-        scrape_cpi_data_us("CUUR0000SA0", data_ranges["invalid_data_range"])
+        scrape_cpi_data_us(data_ranges["invalid_data_range"])
 
 
 def test_scrape_cpi_data_us_future_range(data_ranges):
@@ -373,7 +373,7 @@ def test_scrape_cpi_data_us_future_range(data_ranges):
         ValueError,
         match="Request failed with status: REQUEST_FAILED_INVALID_PARAMETERS",
     ):
-        scrape_cpi_data_us("CUUR0000SA0", data_ranges["future_data_range"])
+        scrape_cpi_data_us(data_ranges["future_data_range"])
 
 
 if __name__ == "__main__":

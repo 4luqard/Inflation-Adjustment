@@ -13,7 +13,9 @@ def ignore_warn(*args, **kwargs):
 warnings.warn = ignore_warn
 
 
-def scrape_cpi_data_us(series_id: str, date_range: dict) -> pl.DataFrame:
+def scrape_cpi_data_us(
+    date_range: dict, series_id: str = "CUUR0000SA0"
+) -> pl.DataFrame:
     url = "https://api.bls.gov/publicAPI/v1/timeseries/data/"
 
     if date_range["end"] == str or date_range["start"] == str:
