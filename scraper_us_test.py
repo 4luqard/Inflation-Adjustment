@@ -4,40 +4,377 @@ import polars as pl
 from scraper_us import scrape_cpi_data_us
 
 import warnings
+
+
 def ignore_warn(*args, **kwargs):
     pass
+
+
 warnings.warn = ignore_warn
+
 
 @pytest.fixture
 def data_ranges():
     return {
-        'data_range': {'start': 1986, 'end': 1986},
-        'empty_data_range': {'start': '', 'end': ''},
-        'invalid_data_range': {'start': 'invalid-date', 'end': 'invalid-date'},
-        'future_data_range': {'start': 2050, 'end': 2050}
+        "data_range_ten_years": {"start": 1986, "end": 1995},
+        "data_range_fifteen_years": {"start": 1986, "end": 2000},
+        "empty_data_range": {"start": "", "end": ""},
+        "invalid_data_range": {"start": "invalid-date", "end": "invalid-date"},
+        "future_data_range": {"start": 2050, "end": 2050},
     }
 
-@pytest.fixture
-def cpi_data_us():
-    return pl.DataFrame({
-        'CPI': [109.6, 109.3, 108.8, 108.6, 108.9, 109.5, 109.5, 109.7, 110.2, 110.3,  110.4, 110.5]
-    })
 
-def test_scrape_cpi_data_us(data_ranges, cpi_data_us):
-    result = scrape_cpi_data_us('CUUR0000SA0', data_ranges['data_range'])
-    assert result['CPI'].equals(cpi_data_us['CPI'])
+@pytest.fixture
+def cpi_data_us_ten_years():
+    return pl.DataFrame(
+        {
+            "CPI": [
+                109.6,
+                109.3,
+                108.8,
+                108.6,
+                108.9,
+                109.5,
+                109.5,
+                109.7,
+                110.2,
+                110.3,
+                110.4,
+                110.5,
+                111.2,
+                111.6,
+                112.1,
+                112.7,
+                113.1,
+                113.5,
+                113.8,
+                114.4,
+                115.0,
+                115.3,
+                115.4,
+                115.4,
+                115.7,
+                116.0,
+                116.5,
+                117.1,
+                117.5,
+                118.0,
+                118.5,
+                119.0,
+                119.8,
+                120.2,
+                120.3,
+                120.5,
+                121.1,
+                121.6,
+                122.3,
+                123.1,
+                123.8,
+                124.1,
+                124.4,
+                124.6,
+                125.0,
+                125.6,
+                125.9,
+                126.1,
+                127.4,
+                128.0,
+                128.7,
+                128.9,
+                129.2,
+                129.9,
+                130.4,
+                131.6,
+                132.7,
+                133.5,
+                133.8,
+                133.8,
+                134.6,
+                134.8,
+                135.0,
+                135.2,
+                135.6,
+                136.0,
+                136.2,
+                136.6,
+                137.2,
+                137.4,
+                137.8,
+                137.9,
+                138.1,
+                138.6,
+                139.3,
+                139.5,
+                139.7,
+                140.2,
+                140.5,
+                140.9,
+                141.3,
+                141.8,
+                142.0,
+                141.9,
+                142.6,
+                143.1,
+                143.6,
+                144.0,
+                144.2,
+                144.4,
+                144.4,
+                144.8,
+                145.1,
+                145.7,
+                145.8,
+                145.8,
+                146.2,
+                146.7,
+                147.2,
+                147.4,
+                147.5,
+                148.0,
+                148.4,
+                149.0,
+                149.4,
+                149.5,
+                149.7,
+                149.7,
+                150.3,
+                150.9,
+                151.4,
+                151.9,
+                152.2,
+                152.5,
+                152.5,
+                152.9,
+                153.2,
+                153.7,
+                153.6,
+                153.5,
+            ],
+        }
+    )
+
+
+@pytest.fixture
+def cpi_data_us_fifteen_years():
+    return pl.DataFrame(
+        {
+            "CPI": [
+                109.6,
+                109.3,
+                108.8,
+                108.6,
+                108.9,
+                109.5,
+                109.5,
+                109.7,
+                110.2,
+                110.3,
+                110.4,
+                110.5,
+                111.2,
+                111.6,
+                112.1,
+                112.7,
+                113.1,
+                113.5,
+                113.8,
+                114.4,
+                115.0,
+                115.3,
+                115.4,
+                115.4,
+                115.7,
+                116.0,
+                116.5,
+                117.1,
+                117.5,
+                118.0,
+                118.5,
+                119.0,
+                119.8,
+                120.2,
+                120.3,
+                120.5,
+                121.1,
+                121.6,
+                122.3,
+                123.1,
+                123.8,
+                124.1,
+                124.4,
+                124.6,
+                125.0,
+                125.6,
+                125.9,
+                126.1,
+                127.4,
+                128.0,
+                128.7,
+                128.9,
+                129.2,
+                129.9,
+                130.4,
+                131.6,
+                132.7,
+                133.5,
+                133.8,
+                133.8,
+                134.6,
+                134.8,
+                135.0,
+                135.2,
+                135.6,
+                136.0,
+                136.2,
+                136.6,
+                137.2,
+                137.4,
+                137.8,
+                137.9,
+                138.1,
+                138.6,
+                139.3,
+                139.5,
+                139.7,
+                140.2,
+                140.5,
+                140.9,
+                141.3,
+                141.8,
+                142.0,
+                141.9,
+                142.6,
+                143.1,
+                143.6,
+                144.0,
+                144.2,
+                144.4,
+                144.4,
+                144.8,
+                145.1,
+                145.7,
+                145.8,
+                145.8,
+                146.2,
+                146.7,
+                147.2,
+                147.4,
+                147.5,
+                148.0,
+                148.4,
+                149.0,
+                149.4,
+                149.5,
+                149.7,
+                149.7,
+                150.3,
+                150.9,
+                151.4,
+                151.9,
+                152.2,
+                152.5,
+                152.5,
+                152.9,
+                153.2,
+                153.7,
+                153.6,
+                153.5,
+                154.4,
+                154.9,
+                155.7,
+                156.3,
+                156.6,
+                156.7,
+                157.0,
+                157.3,
+                157.8,
+                158.3,
+                158.6,
+                158.6,
+                159.1,
+                159.6,
+                160.0,
+                160.2,
+                160.1,
+                160.3,
+                160.5,
+                160.8,
+                161.2,
+                161.6,
+                161.5,
+                161.3,
+                161.6,
+                161.9,
+                162.2,
+                162.5,
+                162.8,
+                163.0,
+                163.2,
+                163.4,
+                163.6,
+                164.0,
+                164.0,
+                163.9,
+                164.3,
+                164.5,
+                165.0,
+                166.2,
+                166.2,
+                166.2,
+                166.7,
+                167.1,
+                167.9,
+                168.2,
+                168.3,
+                168.3,
+                168.8,
+                169.8,
+                171.2,
+                171.3,
+                171.5,
+                172.4,
+                172.8,
+                172.8,
+                173.7,
+                174.0,
+                174.1,
+                174.0,
+            ]
+        }
+    )
+
+
+def test_scrape_cpi_data_us_ten_years(data_ranges, cpi_data_us_ten_years):
+    result = scrape_cpi_data_us("CUUR0000SA0", data_ranges["data_range_ten_years"])
+    assert result["CPI"].equals(cpi_data_us_ten_years["CPI"])
+
+
+def test_scrape_cpi_data_us_fifteen_years(data_ranges, cpi_data_us_fifteen_years):
+    result = scrape_cpi_data_us("CUUR0000SA0", data_ranges["data_range_fifteen_years"])
+    assert result["CPI"].equals(cpi_data_us_fifteen_years["CPI"])
+
 
 def test_scrape_cpi_data_us_empty_range(data_ranges):
-    with pytest.raises(TypeError, match=r"unsupported operand type\(s\) for -: 'str' and 'str'"):
-        scrape_cpi_data_us('CUUR0000SA0', data_ranges['empty_data_range'])
+    with pytest.raises(
+        TypeError, match=r"unsupported operand type\(s\) for -: 'str' and 'str'"
+    ):
+        scrape_cpi_data_us("CUUR0000SA0", data_ranges["empty_data_range"])
+
 
 def test_scrape_cpi_data_us_invalid_range(data_ranges):
-    with pytest.raises(ValueError, match="Request failed with status: REQUEST_FAILED_INVALID_PARAMETERS"):
-        scrape_cpi_data_us('CUUR0000SA0', data_ranges['invalid_data_range'])
+    with pytest.raises(
+        TypeError, match=r"unsupported operand type\(s\) for -: 'str' and 'str'"
+    ):
+        scrape_cpi_data_us("CUUR0000SA0", data_ranges["invalid_data_range"])
+
 
 def test_scrape_cpi_data_us_future_range(data_ranges):
-    with pytest.raises(ValueError, match="Request failed with status: REQUEST_FAILED_INVALID_PARAMETERS"):
-        scrape_cpi_data_us('CUUR0000SA0', data_ranges['future_data_range'])
+    with pytest.raises(
+        ValueError,
+        match="Request failed with status: REQUEST_FAILED_INVALID_PARAMETERS",
+    ):
+        scrape_cpi_data_us("CUUR0000SA0", data_ranges["future_data_range"])
+
 
 if __name__ == "__main__":
     pytest.main()
