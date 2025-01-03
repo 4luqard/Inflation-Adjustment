@@ -1,4 +1,4 @@
-from scraper_us import scrape_cpi_data_us
+from inflation_us import scrape_cpi_data_us
 
 import polars as pl
 from polars import col

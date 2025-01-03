@@ -1,7 +1,7 @@
 import pytest
 import numpy as np
 import polars as pl
-from scraper_us import scrape_cpi_data_us
+from inflation_us import get_cpi_data_us
 
 import warnings
 
@@ -344,36 +344,36 @@ def cpi_data_us_fifteen_years():
     )
 
 
-def test_scrape_cpi_data_us_ten_years(date_ranges, cpi_data_us_ten_years):
-    result = scrape_cpi_data_us(date_ranges["data_range_ten_years"])
+def test_get_cpi_data_us_ten_years(date_ranges, cpi_data_us_ten_years):
+    result = get_cpi_data_us(date_ranges["data_range_ten_years"])
     assert result["CPI"].equals(cpi_data_us_ten_years["CPI"])
 
 
-def test_scrape_cpi_data_us_fifteen_years(date_ranges, cpi_data_us_fifteen_years):
-    result = scrape_cpi_data_us(date_ranges["data_range_fifteen_years"])
+def test_get_cpi_data_us_fifteen_years(date_ranges, cpi_data_us_fifteen_years):
+    result = get_cpi_data_us(date_ranges["data_range_fifteen_years"])
     assert result["CPI"].equals(cpi_data_us_fifteen_years["CPI"])
 
 
-def test_scrape_cpi_data_us_empty_range(date_ranges):
+def test_get_cpi_data_us_empty_range(date_ranges):
     with pytest.raises(
         TypeError, match=r"unsupported operand type\(s\) for -: 'str' and 'str'"
     ):
-        scrape_cpi_data_us(date_ranges["empty_data_range"])
+        get_cpi_data_us(date_ranges["empty_data_range"])
 
 
-def test_scrape_cpi_data_us_invalid_range(date_ranges):
+def test_get_cpi_data_us_invalid_range(date_ranges):
     with pytest.raises(
         TypeError, match=r"unsupported operand type\(s\) for -: 'str' and 'str'"
     ):
-        scrape_cpi_data_us(date_ranges["invalid_data_range"])
+        get_cpi_data_us(date_ranges["invalid_data_range"])
 
 
-def test_scrape_cpi_data_us_future_range(date_ranges):
+def test_get_cpi_data_us_future_range(date_ranges):
     with pytest.raises(
         ValueError,
         match="Request failed with status: REQUEST_FAILED_INVALID_PARAMETERS",
     ):
-        scrape_cpi_data_us(date_ranges["future_data_range"])
+        get_cpi_data_us(date_ranges["future_data_range"])
 
 
 if __name__ == "__main__":

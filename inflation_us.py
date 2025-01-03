@@ -13,7 +13,7 @@ def ignore_warn(*args, **kwargs):
 warnings.warn = ignore_warn
 
 
-def scrape_cpi_data_us(
+def get_cpi_data_us(
     date_range: dict, series_id: str = "CUUR0000SA0"
 ) -> pl.DataFrame:
     url = "https://api.bls.gov/publicAPI/v1/timeseries/data/"
@@ -86,7 +86,7 @@ def scrape_cpi_data_us(
 
 
 # print(
-#     scrape_cpi_data_us("CUUR0000SA0", {"start": 1986, "end": 2000})["CPI"]
+#     scrape_get_data_us("CUUR0000SA0", {"start": 1986, "end": 2000})["CPI"]
 #     .to_pandas()
 #     .values
 # )
